@@ -7,12 +7,12 @@ namespace KoiCareSystemAtHome.Service;
 
 public interface IKoiFishService
 {
-    Task<BusinessResult> GetAll();
-    Task<BusinessResult> GetById(long id);
-    Task<BusinessResult> UpdateById(long id, BusinessResult result);
-    Task<BusinessResult> DeleteById(long id);
-    Task<BusinessResult> Create();
-    Task<BusinessResult> Save(KoiFish koiFish);
+    Task<IServiceResult> GetAll();
+    Task<IServiceResult> GetById(long id);
+    Task<IServiceResult> UpdateById(long id, IServiceResult result);
+    Task<IServiceResult> DeleteById(long id);
+    Task<IServiceResult> Create();
+    Task<IServiceResult> Save(KoiFish koiFish);
 }
 
 
@@ -22,12 +22,12 @@ public class KoiFishService : IKoiFishService
 
     public KoiFishService() => _unitOfWork ??= new UnitOfWork();
 
-    public Task<BusinessResult> Create()
+    public Task<IServiceResult> Create()
     {
         throw new NotImplementedException();
     }
 
-    public async Task<BusinessResult> DeleteById(long id)
+    public async Task<IServiceResult> DeleteById(long id)
     {
         try
         {
@@ -41,18 +41,18 @@ public class KoiFishService : IKoiFishService
                 if (result)
                 {
                     // Xóa thành công => trả về kết quả 
-                    return new BusinessResult(Const.SUCCESS_DELETE_CODE, Const.SUCCESS_DELETE_MSG, result);
+                    return new ServiceResult(Const.SUCCESS_DELETE_CODE, Const.SUCCESS_DELETE_MSG, result);
                 }
                 else
                 {
                     // Xóa không thành công => trả về lỗi  
-                    return new BusinessResult(Const.FAIL_DELETE_CODE, Const.FAIL_DELETE_MSG, existingKoiFish.Result.Data);
+                    return new ServiceResult(Const.FAIL_DELETE_CODE, Const.FAIL_DELETE_MSG, existingKoiFish.Result.Data);
                 }
             }
             else
             {
                 // Kiểm tra không tồn tại trước đó
-                return new BusinessResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG, result);
+                return new ServiceResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG, result);
             }
 
             ////  ////////
@@ -65,7 +65,7 @@ public class KoiFishService : IKoiFishService
         }
         catch (Exception ex)
         {
-            return new BusinessResult(Const.ERROR_EXCEPTION, ex.ToString());
+            return new ServiceResult(Const.ERROR_EXCEPTION, ex.ToString());
         }
     }
 
@@ -74,7 +74,7 @@ public class KoiFishService : IKoiFishService
     //    _unitOfWork ??= new UnitOfWork();
     //}
 
-    public async Task<BusinessResult> GetAll()
+    public async Task<IServiceResult> GetAll()
     {
         try
         {
@@ -84,18 +84,18 @@ public class KoiFishService : IKoiFishService
             var koiFishList = await _unitOfWork.KoiFishRepository.GetAllAsync();
             if (koiFishList == null)
             {
-                return new BusinessResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG);
+                return new ServiceResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG);
             }
 
-            return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, koiFishList);
+            return new ServiceResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, koiFishList);
         }
         catch (Exception)
         {
-            return new BusinessResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG);
+            return new ServiceResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG);
         }
     }
 
-    public async Task<BusinessResult> GetById(long id)
+    public async Task<IServiceResult> GetById(long id)
     {
         try
         {
@@ -106,18 +106,18 @@ public class KoiFishService : IKoiFishService
             var koiFishList = await _unitOfWork.KoiFishRepository.GetByIdAsync(id);
             if (koiFishList == null)
             {
-                return new BusinessResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG);
+                return new ServiceResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG);
             }
 
-            return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, koiFishList);
+            return new ServiceResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, koiFishList);
         }
         catch (Exception)
         {
-            return new BusinessResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG);
+            return new ServiceResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG);
         }
     }
 
-    public async Task<BusinessResult> Save(KoiFish koiFish)
+    public async Task<IServiceResult> Save(KoiFish koiFish)
     {
         try
         {
@@ -129,20 +129,20 @@ public class KoiFishService : IKoiFishService
             {
                 result = await _unitOfWork.KoiFishRepository.UpdateAsync(koiFish);
 
-                return new BusinessResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG, existingKoiFish);
+                return new ServiceResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG, existingKoiFish);
             }
 
             // Create new object
             result = await _unitOfWork.KoiFishRepository.SaveAsync();
-            return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG, existingKoiFish);
+            return new ServiceResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG, existingKoiFish);
         }
         catch (Exception ex)
         {
-            return new BusinessResult(Const.ERROR_EXCEPTION, ex.ToString());
+            return new ServiceResult(Const.ERROR_EXCEPTION, ex.ToString());
         }
     }
 
-    public Task<BusinessResult> UpdateById(long id, BusinessResult result)
+    public Task<IServiceResult> UpdateById(long id, IServiceResult result)
     {
         throw new NotImplementedException();
     }

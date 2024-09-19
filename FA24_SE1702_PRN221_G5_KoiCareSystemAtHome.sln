@@ -7,9 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KoiCareSystemAtHome.Data", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KoiCareSystemAtHome.Service", "KoiCareSystemAtHome.Service\KoiCareSystemAtHome.Service.csproj", "{EB4B9664-FB28-449F-99C6-A29F02CA8AC3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KoiCareSystemAtHome.Common", "KoiCareSystemAtHome.Common\KoiCareSystemAtHome.Common.csproj", "{8F6DA53B-EDD3-419C-98D7-DE83B31F859D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KoiCareSystemAtHome.Common", "KoiCareSystemAtHome.Common\KoiCareSystemAtHome.Common.csproj", "{8F6DA53B-EDD3-419C-98D7-DE83B31F859D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KoiCareSystemAtHome.RazorWebApp", "KoiCareSystemAtHome.RazorWebApp\KoiCareSystemAtHome.RazorWebApp.csproj", "{4F68E36D-1752-4CE5-876B-64D02C610C67}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KoiCareSystemAtHome.RazorWebApp", "KoiCareSystemAtHome.RazorWebApp\KoiCareSystemAtHome.RazorWebApp.csproj", "{EF8E52BA-C33E-4918-85A0-A658F3C1813C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{8F6DA53B-EDD3-419C-98D7-DE83B31F859D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F6DA53B-EDD3-419C-98D7-DE83B31F859D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F6DA53B-EDD3-419C-98D7-DE83B31F859D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4F68E36D-1752-4CE5-876B-64D02C610C67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4F68E36D-1752-4CE5-876B-64D02C610C67}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4F68E36D-1752-4CE5-876B-64D02C610C67}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4F68E36D-1752-4CE5-876B-64D02C610C67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF8E52BA-C33E-4918-85A0-A658F3C1813C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF8E52BA-C33E-4918-85A0-A658F3C1813C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF8E52BA-C33E-4918-85A0-A658F3C1813C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF8E52BA-C33E-4918-85A0-A658F3C1813C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
