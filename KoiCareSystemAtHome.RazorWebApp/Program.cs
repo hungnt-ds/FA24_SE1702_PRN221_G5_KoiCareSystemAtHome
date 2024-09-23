@@ -1,3 +1,7 @@
+using KoiCareSystemAtHome.Data;
+using KoiCareSystemAtHome.Data.Models;
+using KoiCareSystemAtHome.Service;
+
 namespace KoiCareSystemAtHome.RazorWebApp;
 
 public class Program
@@ -8,6 +12,9 @@ public class Program
 
         // Add services to the container.
         builder.Services.AddRazorPages();
+        builder.Services.AddScoped<FA24_SE1702_PRN221_G5_KoiCareSystematHomeContext>();
+        builder.Services.AddScoped<KoiFishService>();
+        builder.Services.AddScoped<UnitOfWork>();
 
         var app = builder.Build();
 

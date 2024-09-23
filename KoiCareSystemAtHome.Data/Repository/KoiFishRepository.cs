@@ -18,4 +18,8 @@ public class KoiFishRepository : GenericRepository<KoiFish>
 
     public KoiFishRepository(FA24_SE1702_PRN221_G5_KoiCareSystematHomeContext context) => _context = context;
 
+    public void UpdateEntity(KoiFish existingEntity, KoiFish newEntity)
+    {
+        _context.Entry(existingEntity).CurrentValues.SetValues(newEntity);
+    }
 }

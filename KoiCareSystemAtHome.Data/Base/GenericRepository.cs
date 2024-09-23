@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using KoiCareSystemAtHome.Data.Models;
@@ -17,10 +18,10 @@ public class GenericRepository<T> where T : class
         _context ??= new FA24_SE1702_PRN221_G5_KoiCareSystematHomeContext();
     }
 
-    public GenericRepository(FA24_SE1702_PRN221_G5_KoiCareSystematHomeContext context)
-    {
-        _context = context;
-    }
+    //public GenericRepository(FA24_SE1702_PRN221_G5_KoiCareSystematHomeContext context)
+    //{
+    //    _context = context;
+    //}
 
     public List<T> GetAll()
     {
@@ -30,6 +31,12 @@ public class GenericRepository<T> where T : class
     {
         return await _context.Set<T>().ToListAsync();
     }
+
+    public IQueryable<KoiFish> GetAllQueryableAsync()
+    {
+        return _context.KoiFishes;  // Trả về IQueryable
+    }
+
     public void Create(T entity)
     {
         _context.Add(entity);
@@ -79,6 +86,20 @@ public class GenericRepository<T> where T : class
     public async Task<T> GetByIdAsync(long id)
     {
         return await _context.Set<T>().FindAsync(id);
+    }
+
+    public async Task<T> GetByIdWithIncludeAsync(long id, params Expression<Func<T, object>>[] includes)
+    {
+        IQueryable<T> query = _context.Set<T>();
+
+        // Thêm các includes (các bảng liên quan) vào truy vấn
+        foreach (var include in includes)
+        {
+            query = query.Include(include);
+        }
+
+        // Tìm kiếm bản ghi với id cụ thể
+        return await query.FirstOrDefaultAsync(entity => EF.Property<long>(entity, "FishId") == id);
     }
 
     public T GetById(string code)
