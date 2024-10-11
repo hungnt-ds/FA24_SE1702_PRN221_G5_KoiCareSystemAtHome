@@ -16,6 +16,7 @@ public interface IKoiFishService
     Task<IServiceResult> DeleteById(long id);
     Task<IServiceResult> Create(KoiFish koiFish);
     Task<IServiceResult> Save(KoiFish koiFish);
+    Task<IServiceResult> SearchKoiFishAsync(string fishName, string pondName, string userName);
 }
 
 
@@ -23,38 +24,96 @@ public class KoiFishService : IKoiFishService
 {
     private readonly UnitOfWork _unitOfWork;
 
-    //public KoiFishService() => _unitOfWork ??= new UnitOfWork(co);
+    public KoiFishService() => _unitOfWork ??= new UnitOfWork();
 
-    public KoiFishService(FA24_SE1702_PRN221_G5_KoiCareSystematHomeContext context)
+    //public KoiFishService(FA24_SE1702_PRN221_G5_KoiCareSystematHomeContext context)
+    //{
+    //    _unitOfWork ??= new UnitOfWork(context);
+    //}
+
+    public async Task<IServiceResult> SearchKoiFishAsync(string fishName, string pondName, string email)
     {
-        _unitOfWork = new UnitOfWork(context);
+        try
+        {
+            var query = _unitOfWork.KoiFishRepository.GetAllQueryableAsync();
+
+            // Lọc theo Fish Name nếu có
+            if (!string.IsNullOrEmpty(fishName))
+            {
+                query = query.Where(k => k.FishName.Contains(fishName));
+            }
+
+            // Lọc theo Pond Name nếu có
+            if (!string.IsNullOrEmpty(pondName))
+            {
+                query = query.Where(k => k.Pond.PondName.Contains(pondName));
+            }
+
+            // Lọc theo User Name nếu có
+            if (!string.IsNullOrEmpty(email))
+            {
+                query = query.Where(k => k.User.Email.Contains(email));
+            }
+
+            var resultList = await query.ToListAsync();
+
+            if (!resultList.Any())
+            {
+                return new ServiceResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG);
+            }
+
+            return new ServiceResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, resultList);
+        }
+        catch (Exception)
+        {
+            return new ServiceResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG);
+        }
     }
+
+
+
+    //public async Task<IServiceResult> Create(KoiFish koiFish)
+    //{
+    //    try
+    //    {
+    //        int result = -1;
+    //        //var existingKoiFish = this.GetById(koiFish.FishId);
+
+    //        //// Update existing
+    //        //if (existingKoiFish.Result.Status == Const.SUCCESS_READ_CODE)
+    //        //{
+    //        //    result = await _unitOfWork.KoiFishRepository.UpdateAsync(koiFish);
+
+    //        //    return new ServiceResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG, existingKoiFish);
+    //        //}
+
+    //        // Create new object
+    //        await _unitOfWork.KoiFishRepository.CreateAsync(koiFish);
+    //        result = await _unitOfWork.KoiFishRepository.SaveAsync();
+    //        return new ServiceResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG);
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        return new ServiceResult(Const.ERROR_EXCEPTION, ex.ToString());
+    //    }
+    //}
 
     public async Task<IServiceResult> Create(KoiFish koiFish)
     {
         try
         {
-            int result = -1;
-            //var existingKoiFish = this.GetById(koiFish.FishId);
-
-            //// Update existing
-            //if (existingKoiFish.Result.Status == Const.SUCCESS_READ_CODE)
-            //{
-            //    result = await _unitOfWork.KoiFishRepository.UpdateAsync(koiFish);
-
-            //    return new ServiceResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG, existingKoiFish);
-            //}
-
-            // Create new object
-            var a = await _unitOfWork.KoiFishRepository.CreateAsync(koiFish);
-            result = await _unitOfWork.KoiFishRepository.SaveAsync();
-            return new ServiceResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG);
+            koiFish.FishId = 0;  // Đặt về giá trị mặc định nếu FishId tự động tăng
+            await _unitOfWork.KoiFishRepository.CreateAsync(koiFish);
+            await _unitOfWork.SaveChangesAsync();
+            return new ServiceResult(Const.SUCCESS_CREATE_CODE, "KoiFish added successfully");
         }
         catch (Exception ex)
         {
-            return new ServiceResult(Const.ERROR_EXCEPTION, ex.ToString());
+            // Log lỗi hoặc kiểm tra exception
+            return new ServiceResult(Const.ERROR_EXCEPTION, ex.Message);
         }
     }
+
 
     public async Task<IServiceResult> DeleteById(long id)
     {
@@ -181,25 +240,36 @@ public class KoiFishService : IKoiFishService
         try
         {
             int result = -1;
-            var existingKoiFish = this.GetById(koiFish.FishId);
+            var existingKoiFish = await this.GetById(koiFish.FishId);
 
-            // Update existing
-            if (existingKoiFish.Result.Status == Const.SUCCESS_READ_CODE)
+            // Nếu đã tồn tại, tiến hành cập nhật
+            if (existingKoiFish.Status == Const.SUCCESS_READ_CODE)
             {
                 result = await _unitOfWork.KoiFishRepository.UpdateAsync(koiFish);
-
-                return new ServiceResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG, existingKoiFish);
+                if (result > 0)
+                {
+                    return new ServiceResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG, koiFish);
+                }
+                return new ServiceResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
             }
-
-            // Create new object
-            result = await _unitOfWork.KoiFishRepository.SaveAsync();
-            return new ServiceResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG, existingKoiFish);
+            else
+            {
+                // Nếu không tồn tại, tạo mới
+                await _unitOfWork.KoiFishRepository.CreateAsync(koiFish);
+                result = await _unitOfWork.SaveChangesAsync();
+                if (result > 0)
+                {
+                    return new ServiceResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG, koiFish);
+                }
+                return new ServiceResult(Const.FAIL_CREATE_CODE, Const.FAIL_CREATE_MSG);
+            }
         }
         catch (Exception ex)
         {
             return new ServiceResult(Const.ERROR_EXCEPTION, ex.ToString());
         }
     }
+
 
     public Task<IServiceResult> UpdateById(long id, IServiceResult result)
     {

@@ -15,9 +15,6 @@ public partial class Order
     [Column("order_id")]
     public long OrderId { get; set; }
 
-    [Column("product_id")]
-    public long? ProductId { get; set; }
-
     [Column("order_date")]
     public long? OrderDate { get; set; }
 

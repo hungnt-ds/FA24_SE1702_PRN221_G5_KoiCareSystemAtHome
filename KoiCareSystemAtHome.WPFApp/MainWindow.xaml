@@ -1,0 +1,176 @@
+﻿<Window x:Class="KoiCareSystemAtHome.WPFApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Koi CareSystem At Home" Height="583" Width="1522">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Grid đầu tiên -->
+            <RowDefinition Height="20"/>
+            <!-- Khoảng cách giữa các Grid -->
+            <RowDefinition Height="Auto"/>
+            <!-- Grid thứ hai -->
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="0,0,0,10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <GroupBox Header="Input" FontWeight="Bold">
+                <Grid Margin="10,0,15,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.5*" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="0.5*" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="0.5*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Fish Name -->
+                    <Label Grid.Row="0" Grid.Column="0" Content="Fish Name:"/>
+                    <TextBox x:Name="txtFishName" Grid.Row="0" Grid.Column="1" Text="{Binding FishName}" HorizontalAlignment="Stretch"/>
+
+                    <!-- UserId -->
+                    <Label Grid.Row="0" Grid.Column="2" Content="Email:"/>
+                    <ComboBox x:Name="cboUserId" Grid.Row="0" Grid.Column="3"
+                        ItemsSource="{Binding UserList}" 
+                        DisplayMemberPath="Email" 
+                        SelectedValuePath="Id" 
+                        SelectedValue="{Binding Id}" 
+                        HorizontalAlignment="Stretch"/>
+
+                    <!-- Pond ID -->
+                    <Label Grid.Row="0" Grid.Column="4" Content="Pond:"/>
+                    <ComboBox x:Name="cboPondId" Grid.Row="0" Grid.Column="5"
+                        ItemsSource="{Binding PondList}" 
+                        DisplayMemberPath="PondName" 
+                        SelectedValuePath="PondId" 
+                        SelectedValue="{Binding PondId}" 
+                        HorizontalAlignment="Stretch"/>
+
+                    <!-- ImageUrl -->
+                    <Label Grid.Row="1" Grid.Column="0" Content="Image URL:"/>
+                    <TextBox x:Name="txtImageUrl" Grid.Row="1" Grid.Column="1" Text="{Binding ImageUrl}" HorizontalAlignment="Stretch"/>
+
+                    <!-- BodyShape -->
+                    <Label Grid.Row="1" Grid.Column="2" Content="Body Shape:"/>
+                    <TextBox x:Name="txtBodyShape" Grid.Row="1" Grid.Column="3" Text="{Binding BodyShape}" HorizontalAlignment="Stretch"/>
+
+                    <!-- Age -->
+                    <Label Grid.Row="1" Grid.Column="4" Content="Age:"/>
+                    <TextBox x:Name="txtAge" Grid.Row="1" Grid.Column="5" Text="{Binding Age}" HorizontalAlignment="Stretch"/>
+
+                    <!-- Size -->
+                    <Label Grid.Row="2" Grid.Column="0" Content="Size:"/>
+                    <TextBox x:Name="txtSize" Grid.Row="2" Grid.Column="1" Text="{Binding Size}" HorizontalAlignment="Stretch"/>
+
+                    <!-- Weight -->
+                    <Label Grid.Row="2" Grid.Column="2" Content="Weight:"/>
+                    <TextBox x:Name="txtWeight" Grid.Row="2" Grid.Column="3" Text="{Binding Weight}" HorizontalAlignment="Stretch"/>
+
+                    <!-- Gender -->
+                    <Label Grid.Row="2" Grid.Column="4" Content="Gender:"/>
+                    <TextBox x:Name="txtGender" Grid.Row="2" Grid.Column="5" Text="{Binding Gender}" HorizontalAlignment="Stretch"/>
+
+                    <!-- Breed -->
+                    <Label Grid.Row="3" Grid.Column="0" Content="Breed:"/>
+                    <TextBox x:Name="txtBreed" Grid.Row="3" Grid.Column="1" Text="{Binding Breed}" HorizontalAlignment="Stretch"/>
+
+                    <!-- Origin -->
+                    <Label Grid.Row="3" Grid.Column="2" Content="Origin:"/>
+                    <TextBox x:Name="txtOrigin" Grid.Row="3" Grid.Column="3" Text="{Binding Origin}" HorizontalAlignment="Stretch"/>
+
+                    <!-- Price -->
+                    <Label Grid.Row="3" Grid.Column="4" Content="Price:"/>
+                    <TextBox x:Name="txtPrice" Grid.Row="3" Grid.Column="5" Text="{Binding Price}" HorizontalAlignment="Stretch"/>
+
+                    <!-- CreatedAt -->
+                    <!--
+                    <Label Grid.Row="4" Grid.Column="0" Content="Created At:"/>
+                    <TextBox x:Name="txtCreatedAt" Grid.Row="4" Grid.Column="1" Text="{Binding CreatedAt}" HorizontalAlignment="Stretch"/>
+
+                    -->
+                    <!-- UpdatedAt -->
+                    <!--
+                    <Label Grid.Row="4" Grid.Column="2" Content="Updated At:"/>
+                    <TextBox x:Name="txtUpdatedAt" Grid.Row="4" Grid.Column="3" Text="{Binding UpdatedAt}" HorizontalAlignment="Stretch"/>-->
+
+
+                    <!-- Nút bấm Save -->
+                    <Button Grid.Row="5" Grid.Column="5" 
+                        Content="Save" 
+                        HorizontalAlignment="Right" 
+                        VerticalAlignment="Center" 
+                        Width="100" Click="SaveButton_Click" />
+
+                    <!-- Nút bấm Reset -->
+                    <Button Grid.Row="5" Grid.Column="5" 
+                        Content="Reset" 
+                        HorizontalAlignment="Left" 
+                        VerticalAlignment="Bottom" 
+                        Width="100" Click="ResetButton_Click" />
+                </Grid>
+            </GroupBox>
+
+        </Grid>
+
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="58*" />
+                <RowDefinition Height="189*" />
+            </Grid.RowDefinitions>
+            <!-- Phần tìm kiếm -->
+            <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="10,10,0,10" HorizontalAlignment="Left" Width="789">
+                <!-- Input 1: Fish Name -->
+                <Label Content="Fish Name:" Margin="0,0,5,0"/>
+                <TextBox x:Name="FishNameSearchBox" Width="150" Margin="0,0,10,0"/>
+
+                <!-- Input 2: Pond Name -->
+                <Label Content="Pond Name:" Margin="0,0,5,0"/>
+                <TextBox x:Name="PondNameSearchBox" Width="150" Margin="0,0,10,0"/>
+
+                <!-- Input 3: User Name -->
+                <Label Content="Email:" Margin="0,0,5,0"/>
+                <TextBox x:Name="EmailSearchBox" Width="150" Margin="0,0,10,0"/>
+
+                <!-- Nút bấm Tìm kiếm -->
+                <Button Content="Search" Width="80" Click="SearchButton_Click"/>
+            </StackPanel>
+
+            <DataGrid x:Name="KoiFishDataGrid" 
+                    AutoGenerateColumns="False" 
+                    CanUserAddRows="False" 
+                    IsReadOnly="True" 
+                    Grid.Row="1"
+                    MouseDoubleClick="KoiFishDataGrid_MouseDoubleClick">
+                <DataGrid.Columns>
+                    <!-- Định nghĩa các cột cho dữ liệu -->
+                    <DataGridTextColumn Header="Fish Name" Binding="{Binding FishName}" Width="*"/>
+                    <DataGridTextColumn Header="Pond" Binding="{Binding Pond.PondName}" Width="*"/>
+                    <DataGridTextColumn Header="Email User" Binding="{Binding User.Email}" Width="*"/>
+                    <DataGridTextColumn Header="Body Shape" Binding="{Binding BodyShape}" Width="*"/>
+                    <DataGridTextColumn Header="Age" Binding="{Binding Age}" Width="*"/>
+                    <DataGridTextColumn Header="Size" Binding="{Binding Size}" Width="*"/>
+                    <DataGridTextColumn Header="Weight" Binding="{Binding Weight}" Width="*"/>
+                    <DataGridTextColumn Header="Gender" Binding="{Binding Gender}" Width="*"/>
+                    <DataGridTextColumn Header="Breed" Binding="{Binding Breed}" Width="*"/>
+                    <DataGridTextColumn Header="Origin" Binding="{Binding Origin}" Width="*"/>
+                    <DataGridTextColumn Header="Price" Binding="{Binding Price}" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </Grid>
+</Window>

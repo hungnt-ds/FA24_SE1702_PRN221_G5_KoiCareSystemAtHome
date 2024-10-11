@@ -72,9 +72,10 @@ public class UnitOfWork
     private PondRepository _pondRepository;
     private UserRepository _userRepository;
 
+    public UnitOfWork() => _unitOfWorkContext ??= new FA24_SE1702_PRN221_G5_KoiCareSystematHomeContext();
     public UnitOfWork(FA24_SE1702_PRN221_G5_KoiCareSystematHomeContext unitOfWorkContext)
     {
-        _unitOfWorkContext = unitOfWorkContext ?? throw new ArgumentNullException(nameof(unitOfWorkContext));
+        _unitOfWorkContext ??= new FA24_SE1702_PRN221_G5_KoiCareSystematHomeContext();
     }
 
     public KoiFishRepository KoiFishRepository

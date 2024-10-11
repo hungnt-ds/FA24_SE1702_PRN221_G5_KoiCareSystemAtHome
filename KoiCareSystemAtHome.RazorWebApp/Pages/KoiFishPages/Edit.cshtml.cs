@@ -216,9 +216,10 @@ namespace KoiCareSystemAtHome.RazorWebApp.Pages.KoiFishPages
             if (pondsResult.Status == Const.SUCCESS_READ_CODE && pondsResult.Data != null && ((IEnumerable<Pond>)pondsResult.Data).Any())
             {
                 var ponds = (IEnumerable<Pond>)pondsResult.Data;
-
-                var pondsId = ponds.Select(x => new { Id = x.PondId }).ToList();
+                var pondsId = ponds.Select(x => new { PondId = x.PondId }).ToList();
                 ViewData["PondId"] = new SelectList(pondsId, "PondId", "PondId", KoiFish.PondId);
+
+                var a = KoiFish;
             }
             else
             {
